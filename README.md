@@ -10,15 +10,16 @@ The implementation I've created adds *exception-safety*; this is important in an
 
 Here is an example of how to use this:
 
-.python
-    myPool = Pool[int](100, int)
-    myHandle = myPool.alloc()
-    print(myPool[myHandle])
-    myPool.free(myHandle)
-    
-    floatPool = Pool[float](100)
-    strPool = Pool[str](100)
-    with ScopedHandle(floatPool, lambda: 1.0) as float_handle,\
-         ScopedHandle(strPool, lambda: "blabla") as str_handle:
-             print(floatPool[float_handle])
-             print(strPool[str_handle])
+```python
+myPool = Pool[int](100, int)
+myHandle = myPool.alloc()
+print(myPool[myHandle])
+myPool.free(myHandle)
+
+floatPool = Pool[float](100)
+strPool = Pool[str](100)
+with ScopedHandle(floatPool, lambda: 1.0) as float_handle,\
+        ScopedHandle(strPool, lambda: "blabla") as str_handle:
+            print(floatPool[float_handle])
+            print(strPool[str_handle])
+```
