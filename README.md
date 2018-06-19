@@ -8,7 +8,7 @@ The author also claims that it has better cache locality than C++'s smart pointe
 
 The implementation I've created adds *exception-safety*; this is important in any language with exception-handling like C++. It accomplishes this with `with` statements; in C++ you would use destructors.
 
-Here is an example of how to use this:
+Here is an example of how to use type-segregated pools:
 
 ```python
 myPool = Pool[int](100, int)
