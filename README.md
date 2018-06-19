@@ -6,7 +6,7 @@ The idea is to use an alternative to pointers and heaps for managing memory, whi
 
 The author also claims that it has better cache locality than C++'s smart pointers.
 
-The implementation I've created adds *exception-safety*; this is important in any language with exception-handling, like C++. It accomplishes this with `with` statements; in C++ you would use destructors.
+The implementation I've created adds *exception-safety*; this is important in any language with exception-handling like C++. It accomplishes this with `with` statements; in C++ you would use destructors.
 
 This is an example of how to use this:
 .python
