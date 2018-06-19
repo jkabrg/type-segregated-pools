@@ -58,7 +58,7 @@ class Pool(Generic[T]):
         self.free_slots.append(Handle(handle.index))
         
 if __name__ == '__main__':
-    myPool = Pool[int](100, int)
+    myPool = Pool[int](100, constructor=int)
     myHandle = myPool.alloc()
     print(myPool[myHandle])
     myPool.free(myHandle)

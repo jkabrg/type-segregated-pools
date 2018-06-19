@@ -11,7 +11,7 @@ The implementation I've created adds *exception-safety*; this is important in an
 Here is an example of how to use type-segregated pools:
 
 ```python
-myPool = Pool[int](100, int)
+myPool = Pool[int](100, constructor=int)
 myHandle = myPool.alloc()
 print(myPool[myHandle])
 myPool.free(myHandle)
