@@ -6,7 +6,7 @@ The idea is to use an alternative to pointers and heaps for managing memory, whi
 
 The author also claims that it has better cache locality than C++'s smart pointers.
 
-My implementation adds *exception-safety*; this is important in any language with exception-handling like C++. It accomplishes this with `with` statements; in C++ you would use destructors.
+This implementation adds *exception-safety*; this is important in any language with exception-handling like C++. It accomplishes this with `with` statements; in C++ you would use destructors.
 
 Here is an example of how to use type-segregated pools:
 
