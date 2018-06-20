@@ -1,4 +1,4 @@
-This is an implementation of the ideas in the essay by floooh called [Handles are the better pointers](https://floooh.github.io/2018/06/17/handles-vs-pointers.html).
+This is an implementation of the ideas in floooh's essay [Handles are the better pointers](https://floooh.github.io/2018/06/17/handles-vs-pointers.html).
 
 The idea is to use an alternative to pointers and heaps for managing memory, which I'll call *type segregated pools*. These are fixed-size arrays that hold elements of a fixed type. Instead of passing pointers around, you pass around handles that contain indices into these arrays. The style of programming with *type segregated pools* is similar to typical `malloc()` and `free()` based programming in C, but allocates and frees from pools of the corresponding type. The essay proposes a heuristic for catching *use-after-free errors* and even *memory leaks*.
   - For use-after-free detection, it proposes attaching a uniqueness ID to each handle, and a corresponding uniqueness ID to each element of the pool arrays. If these don't match when a user dereferences a handle then this proves that a use-after-free error has taken place.
