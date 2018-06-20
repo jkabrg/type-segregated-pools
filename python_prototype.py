@@ -13,28 +13,13 @@ class PoolOutOfSpaceException(Exception):
     pass
 
 T = TypeVar('T')
-
-class ScopedHandle():
-    def __init__(self, pool, *args):
-        self.pool = pool
-        self.handle = pool.alloc(*args)
-        
-    def __enter__(self):
-        return self.handle
-    
-    def __exit__(self, type, value, traceback):
-        #Exception handling here
-        self.pool.free(self.handle)
-        self.pool = None
-        self.handle = None
-
 class Pool(Generic[T]):
     def __init__(self, size:int, constructor=None):
         self.array = [None]*size
         self.free_slots = [Handle(index) for index in range(size)] # to make allocation O(1)
         self.use_after_free_checks = [None]*size
         self.constructor = constructor
-        
+
     def check_for_use_after_free(self, handle:Handle):
         if handle.use_after_free_check != self.use_after_free_checks[handle.index]:
             raise UseAfterFreeException()
@@ -42,7 +27,7 @@ class Pool(Generic[T]):
     def __getitem__(self, handle:Handle)->T:
         self.check_for_use_after_free(handle)
         return self.array[handle.index]
-    
+
     def alloc(self, constructor=None) -> Handle:
         if constructor is None:
             constructor = self.constructor
@@ -58,13 +43,27 @@ class Pool(Generic[T]):
         self.check_for_use_after_free(handle)
         self.use_after_free_checks[handle.index] = None
         self.free_slots.append(Handle(handle.index))
-        
+
+class ScopedHandle():
+    def __init__(self, pool, *args):
+        self.pool = pool
+        self.handle = pool.alloc(*args)
+
+    def __enter__(self):
+        return self.handle
+
+    def __exit__(self, type, value, traceback):
+        #Exception handling here
+        self.pool.free(self.handle)
+        self.pool = None
+        self.handle = None
+
 if __name__ == '__main__':
     myPool = Pool[int](100, constructor=int)
     myHandle = myPool.alloc()
     print(myPool[myHandle])
     myPool.free(myHandle)
-    
+
     floatPool = Pool[float](100)
     strPool = Pool[str](100)
     with ScopedHandle(floatPool, lambda: 1.0) as float_handle,\
