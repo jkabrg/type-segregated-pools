@@ -25,7 +25,9 @@ class ScopedHandle():
     def __exit__(self, type, value, traceback):
         #Exception handling here
         self.pool.free(self.handle)
-        
+        self.pool = None
+        self.handle = None
+
 class Pool(Generic[T]):
     def __init__(self, size:int, constructor=None):
         self.array = [None]*size
